@@ -8,10 +8,10 @@ function count = DBSCAN(Eps,MinPts)
     global state
     state = zeros(1, size(data, 2));    %数据点状态量，N*1矩阵，0:未处理,1:核心点，2：非核心点
     for i=1:size(state,2)
-        if state(:,i) == 0
-            state(:,i) = 1; 
-            cluster = getNeighbours(data(:,i),Eps);
-            if numel(cluster) < MinPts
+        if state(:,i) == 0      % 判断是否为处理过，如果没处理过，进行处理
+            state(:,i) = 1;     % 标记处理过，进行处理
+            cluster = getNeighbours(data(:,i),Eps); % 计算其领域点数量
+            if numel(cluster) < MinPts     % 小于MinPts 标记非核心点 否则为核心点进行扩展
                 state(:,i) = 2;
             else
                 finshCluster = expandCluster(cluster,Eps,MinPts);
